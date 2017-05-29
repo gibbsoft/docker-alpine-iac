@@ -4,7 +4,7 @@ MAINTAINER Nigel Gibbs <nigel@gibbsoft.com>
 
 ENV TERRAFORM_VERSION=0.8.8
 ENV TERRAGRUNT_VERSION=0.11.1
-ENV TERRAFORM_CREDSTASH_VERSION=v0.1.0
+ENV TERRAFORM_CREDSTASH_VERSION=0.1.0
 ENV TERRAGRUNT_TFPATH=/go/bin/terraform
 ENV PATH=${PATH}:/go/bin
 
@@ -20,8 +20,11 @@ RUN git clone https://github.com/hashicorp/terraform.git ./ && \
     git checkout v${TERRAFORM_VERSION} && \
     /bin/bash scripts/build.sh
 
-WORKDIR $GOPATH
-RUN go get -v -u github.com/sspinc/terraform-provider-credstash
+WORKDIR $GOPATH/src/github.com/sspinc/terraform-provider-credstash
+RUN go get -v -u github.com/sspinc/terraform-provider-credstash && \
+    git checkout v${TERRAFORM_CREDSTASH_VERSION} && \
+    make build && \
+    mv terraform-provider-credstash /go/bin/
 
 WORKDIR $GOPATH
 ENTRYPOINT ["/bin/bash"]
