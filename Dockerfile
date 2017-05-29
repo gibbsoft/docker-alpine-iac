@@ -8,7 +8,7 @@ ENV TERRAFORM_CREDSTASH_VERSION=0.1.0
 ENV TERRAGRUNT_TFPATH=/go/bin/terraform
 ENV PATH=${PATH}:/go/bin
 
-RUN apk add --update build-base openssh openssl-dev libffi-dev python2 python2-dev py2-pip py-virtualenv git bash curl
+RUN apk add --update --no-cache build-base openssh openssl-dev libffi-dev python2 python2-dev py2-pip py-virtualenv git bash curl
 
 RUN mkdir -p ${GOROOT} ${GOROOT}/bin ${GOBIN}
 
@@ -25,6 +25,9 @@ RUN go get -v -u github.com/sspinc/terraform-provider-credstash && \
     git checkout v${TERRAFORM_CREDSTASH_VERSION} && \
     make build && \
     mv terraform-provider-credstash /go/bin/
+
+RUN rm -rf $GOPATH/src && \
+
 
 WORKDIR $GOPATH
 ENTRYPOINT ["/bin/bash"]
