@@ -28,4 +28,4 @@ WORKDIR $GOPATH
 RUN go get -v -u github.com/sspinc/terraform-provider-credstash
 
 WORKDIR $GOPATH
-ENTRYPOINT ["/bin/bash", "sh"]
+ENTRYPOINT ["/bin/bash"]
