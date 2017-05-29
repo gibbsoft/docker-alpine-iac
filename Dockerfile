@@ -5,12 +5,8 @@ MAINTAINER Nigel Gibbs <nigel@gibbsoft.com>
 ENV TERRAFORM_VERSION=0.8.8
 ENV TERRAGRUNT_VERSION=0.11.1
 ENV TERRAFORM_CREDSTASH_VERSION=v0.1.0
-ENV TERRAGRUNT_TFPATH=/bin/terraform
-ENV TF_DEV=true
-# ENV GOROOT=/goroot \
-#     GOPATH=/gopath \
-#     GOBIN=/gopath/bin \
-#     PATH=${PATH}:/goroot/bin:/gopath/bin
+ENV TERRAGRUNT_TFPATH=/go/bin/terraform
+ENV PATH=${PATH}:/go/bin
 
 RUN apk add --update build-base openssh openssl-dev libffi-dev python2 python2-dev py2-pip py-virtualenv git bash curl
 
