@@ -6,9 +6,11 @@ ENV TERRAFORM_VERSION=0.8.8
 ENV TERRAGRUNT_VERSION=0.11.1
 ENV TERRAFORM_CREDSTASH_VERSION=0.1.0
 ENV TERRAGRUNT_TFPATH=/go/bin/terraform
+ENV TF_DEV=1
 ENV PATH=${PATH}:/go/bin
 
-RUN apk add --update --no-cache build-base openssh openssl-dev libffi-dev python2 python2-dev py2-pip py-virtualenv git bash curl
+RUN apk add --update --no-cache --virtual build-dependencies build-base openssl-dev libffi-dev python2-dev
+RUN apk add --update --no-cache openssh python2 py2-pip py-virtualenv zip git bash curl
 
 RUN mkdir -p ${GOROOT} ${GOROOT}/bin ${GOBIN}
 
@@ -20,13 +22,14 @@ RUN git clone https://github.com/hashicorp/terraform.git ./ && \
     git checkout v${TERRAFORM_VERSION} && \
     /bin/bash scripts/build.sh
 
+RUN go get -v -u github.com/sspinc/terraform-provider-credstash
 WORKDIR $GOPATH/src/github.com/sspinc/terraform-provider-credstash
-RUN go get -v -u github.com/sspinc/terraform-provider-credstash && \
-    git checkout v${TERRAFORM_CREDSTASH_VERSION} && \
+RUN git checkout v${TERRAFORM_CREDSTASH_VERSION} && \
     make build && \
     mv terraform-provider-credstash /go/bin/
 
-RUN rm -rf $GOPATH/src && \
+RUN apk del build-dependencies && \
+    rm -rf $GOPATH/src
 
 
 WORKDIR $GOPATH
