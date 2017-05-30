@@ -31,6 +31,4 @@ RUN git checkout v${TERRAFORM_CREDSTASH_VERSION} && \
 RUN apk del build-dependencies && \
     rm -rf $GOPATH/src
 
-
 WORKDIR $GOPATH
-ENTRYPOINT ["/bin/bash"]
